@@ -11,13 +11,13 @@ describe("/api/genres", () => {
       .set("x-auth-token", token)
       .send({ name: name });
   };
-  beforeEach(() => {
+  beforeEach(async () => {
     server = require("../../index");
-    token = new User().generateAuthToken();
+    token = await new User().generateAuthToken();
     name = 'genre1'
   });
   afterEach(async () => {
-    server.close();
+    await server.close();
     await Genre.remove({});
   });
 

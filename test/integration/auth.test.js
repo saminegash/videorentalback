@@ -6,19 +6,18 @@ let server;
 describe("auth middleware", () => {
   let token;
 
-
   const exec = async() => {
     return await request(server)
       .post("/api/genres")
       .set("x-auth-token", token)
       .send({ name: "genre1" });
   };
-  beforeEach(() => {
+  beforeEach(async () => {
     server = require("../../index");
-    token = new User().generateAuthToken();
+    token = await new User().generateAuthToken();
   });
   afterEach(async () => {
-    server.close();
+    await server.close();
     await Genre.remove({});
   });
   

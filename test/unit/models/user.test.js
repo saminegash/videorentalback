@@ -1,1 +1,5 @@
-describe("user model", () =>{})
+describe("user model", () =>{
+    it("should work",()=>{
+        
+    })
+})

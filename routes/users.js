@@ -5,11 +5,11 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 const auth = require("../middleware/auth");
 
-router.get('/me', auth, async(req,res) =>{
+router.get("/me", auth, async (req, res) => {
   const user = await User.findById(req.user._id).select("-password");
 
   res.send(user);
-})
+});
 
 router.post("/", async (req, res) => {
   const { error } = validate(req.body);
@@ -26,9 +26,13 @@ router.post("/", async (req, res) => {
   user.password = await bcrypt.hash(user.password, salt);
 
   user = await user.save();
-  
-  const token = user.generateAuthToken()
-  res.header('x-auth-token', token).send(user);
+
+  const token = user.generateAuthToken();
+
+  res
+    .header("x-auth-token", token)
+    .header("access-control-expose-headers", "x-auth-token")
+    .send(user);
 });
 
 module.exports = router;

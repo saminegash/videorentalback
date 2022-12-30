@@ -1,4 +1,7 @@
-module.exports = function admin(req,res,next){
-    if(!req.user.isAdmin) return res.status(403).send('Access Denied')
-    next()
-}
+const { config } = require("config");
+
+module.exports = function admin(req, res, next) {
+  if (!config.get("requiresAuth")) return next();
+  if (!req.user.isAdmin) return res.status(403).send("Access Denied");
+  next();
+};
